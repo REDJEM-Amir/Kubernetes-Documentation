@@ -1,16 +1,20 @@
 # Kubernetes Documentation
 
-| Action                                           | Commande                                                                                              |
-|:-------------------------------------------------|:------------------------------------------------------------------------------------------------------|
-| Mettre à jour les packages                       | sudo apt-get update && sudo apt-get upgrade -y                                                        |
-| Installer les dépendances nécessaires            | sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common           |
-| Ajouter la clé GPG pour Kubernetes               | curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -                    |
-| Ajouter le dépôt Kubernetes                      | sudo add-apt-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"                        |
-| Désactiver le swap (obligatoire)                 | sudo swapoff -a                                                                                       |
-| Configurer le sysctl pour le routing IP          | sudo modprobe overlay && sudo modprobe br_netfilter                                                   |
-| Ajouter des paramètres sysctl pour Kubernetes    | echo 'net.bridge.bridge-nf-call-iptables=1' | sudo tee /etc/sysctl.d/k8s.conf && sudo sysctl --system |
+# Installation de Kubernetes
 
-# Installation de Kubernetes / Start / Stop / Logs
+```shell
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+```
+
+# Kubernetes / Start / Stop / Logs
 | Action                                  | Commande                                                 |
 |:----------------------------------------|:---------------------------------------------------------|
 | Installation de Kubernetes avec kubeadm | sudo kubeadm init                                        |
