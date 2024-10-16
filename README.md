@@ -1,47 +1,30 @@
 # Kubernetes Documentation
 
-# Installation de Kubernetes
+## Helm Commands
 
-```shell
-sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+| **Command**                 | **Description**                                         | **Usage**                                          |
+|-----------------------------|---------------------------------------------------------|----------------------------------------------------|
+| `helm install`               | Installs a chart into a Kubernetes cluster              | `helm install <release_name> <chart>`              |
+| `helm upgrade`               | Upgrades an existing chart deployment                   | `helm upgrade <release_name> <chart>`              |
+| `helm uninstall`             | Uninstalls a deployed chart                             | `helm uninstall <release_name>`                    |
+| `helm list`                  | Lists all installed Helm releases                       | `helm list`                                        |
+| `helm repo add`              | Adds a Helm chart repository                            | `helm repo add <repo_name> <repo_url>`             |
+| `helm repo update`           | Updates your local Helm chart repositories              | `helm repo update`                                 |
+| `helm search repo`           | Searches charts in repositories                         | `helm search repo <keyword>`                       |
+| `helm show values`           | Displays the default values of a chart                  | `helm show values <chart>`                         |
+| `helm rollback`              | Rolls back a release to a previous version              | `helm rollback <release_name> <revision_number>`    |
 
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+## Kubectl Commands
 
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
-
-sudo apt-get update
-sudo apt-get install -y kubelet kubeadm kubectl
-sudo apt-mark hold kubelet kubeadm kubectl
-```
-
-# Kubernetes / Start / Stop / Logs
-| Action                                  | Commande                                                 |
-|:----------------------------------------|:---------------------------------------------------------|
-| Installation de Kubernetes avec kubeadm | sudo kubeadm init                                        |
-| Configurer kubectl pour l'utilisateur   | mkdir -p $HOME/.kube                                     |
-|                                         | sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config |
-|                                         | sudo chown $(id -u):$(id -g) $HOME/.kube/config          |
-| Démarrer Kubernetes                     | sudo systemctl start kubelet                             |
-| Arrêter Kubernetes                      | sudo systemctl stop kubelet                              |
-| Redémarrer Kubernetes                   | sudo systemctl restart kubelet                           |
-| Voir les logs de Kubernetes             | journalctl -xeu kubelet                                  |
-| Vérifier le statut du cluster           | kubectl get nodes                                        |
-
-# Installation du client Kubernetes / Start / Stop / Logs
-| Action                             | Commande                                                            |
-|:-----------------------------------|:--------------------------------------------------------------------|
-| Installation de kubectl            | sudo apt-get install -y kubectl                                     |
-| Vérifier la version de kubectl     | kubectl version --client                                            |
-| Configurer l'accès au cluster      | kubectl config set-cluster <cluster-name> --server=<api-server-url> |
-| Démarrer une commande avec kubectl | kubectl <commande>                                                  |
-| Arrêter kubectl (arrêt d'un pod)   | kubectl delete pod <pod-name>                                       |
-| Voir les logs d'un pod             | kubectl logs <pod-name>                                             |
-
-# Scalabilité & Haute Disponibilité : Auto-scaling, Gestion de Charge et Haute Disponibilité
-| Action                                                  | Commande                                                                                                                     |
-|:--------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------|
-| Auto-scaling d'un déploiement                           | kubectl autoscale deployment <nom-deployment> --min=1 --max=10 --cpu-percent=80                                              |
-| Voir les événements de scaling                          | kubectl get hpa                                                                                                              |
-| Mettre à jour un déploiement pour ajouter des répliques | kubectl scale --replicas=3 deployment/<nom-deployment>                                                                       |
-| Mettre en place un Load Balancer                        | kubectl expose deployment <nom-deployment> --type=LoadBalancer --name=<nom-service>                                          |
-| Configurer la haute disponibilité pour un cluster       | Mettre en place plusieurs master nodes et worker nodes avec un load balancer (configuration manuelle selon l'infrastructure) |
+| **Command**                 | **Description**                                         | **Usage**                                          |
+|-----------------------------|---------------------------------------------------------|----------------------------------------------------|
+| `kubectl get`                | Displays resources in a Kubernetes cluster              | `kubectl get <resource_type>`                      |
+| `kubectl describe`           | Shows detailed information about a specific resource    | `kubectl describe <resource_type> <resource_name>` |
+| `kubectl apply`              | Applies a YAML configuration file to the cluster        | `kubectl apply -f <file.yaml>`                     |
+| `kubectl delete`             | Deletes a resource in the cluster                       | `kubectl delete <resource_type> <resource_name>`   |
+| `kubectl logs`               | Shows logs from a specific pod                          | `kubectl logs <pod_name>`                          |
+| `kubectl exec`               | Executes a command in a container within a pod          | `kubectl exec -it <pod_name> -- <command>`         |
+| `kubectl scale`              | Scales a resource to a specified number of replicas     | `kubectl scale <resource_type> --replicas=<number> <resource_name>` |
+| `kubectl rollout restart`    | Restarts a deployment                                   | `kubectl rollout restart deployment/<deployment_name>` |
+| `kubectl port-forward`       | Forwards a local port to a pod                          | `kubectl port-forward <pod_name> <local_port>:<pod_port>` |
+| `kubectl get nodes`          | Lists all nodes in the cluster                          | `kubectl get nodes`                                |
